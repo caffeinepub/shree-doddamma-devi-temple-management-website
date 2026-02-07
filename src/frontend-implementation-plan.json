@@ -1,0 +1,504 @@
+{
+  "kind": "implementation_plan",
+  "version": "1.0",
+  "title": "Shree Doddamma Devi Temple — Public Site + Admin Portal (Frontend)",
+  "requirements": [
+    {
+      "id": "REQ-1",
+      "summary": "Build public, mobile-first site with required navigation and bilingual (Kannada + English) section headings.",
+      "acceptanceCriteria": [
+        "Public pages are accessible without login on mobile and desktop.",
+        "Public navigation includes links to all required public sections.",
+        "All public pages display temple name and location somewhere in the UI.",
+        "Public content is in English; section headings include Kannada + English (e.g., “ದಾನ / Donations”)."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/App.tsx",
+          "operation": "create",
+          "description": "Create the main app shell with public routes for Donations, Payment Confirmation, Total Collection, Committee Members, Jatre/Festivals, Gallery, Contact Numbers, and Location; include persistent header/nav that shows “Shree Doddamma Devi Temple” and “Bommenahalli Vaddarahatti”."
+        },
+        {
+          "path": "frontend/src/components/layout/PublicLayout.tsx",
+          "operation": "create",
+          "description": "Create a reusable public layout wrapper (header, footer, background) that enforces mobile-first spacing and includes consistent temple name/location across pages."
+        },
+        {
+          "path": "frontend/src/components/nav/PublicNav.tsx",
+          "operation": "create",
+          "description": "Create public navigation with links to all required public sections and bilingual link labels (Kannada + English)."
+        },
+        {
+          "path": "frontend/src/pages/public/DonationsPage.tsx",
+          "operation": "create",
+          "description": "Create the public Donations page (heading “ದಾನ / Donations”) and ensure content is English with bilingual headings."
+        },
+        {
+          "path": "frontend/src/pages/public/PaymentConfirmationPage.tsx",
+          "operation": "create",
+          "description": "Create the public Payment Confirmation page (heading “ಪಾವತಿ ದೃಢೀಕರಣ / Payment Confirmation”)."
+        },
+        {
+          "path": "frontend/src/pages/public/TotalCollectionPage.tsx",
+          "operation": "create",
+          "description": "Create the public Total Collection page (heading “ಒಟ್ಟು ಸಂಗ್ರಹ / Total Collection”)."
+        },
+        {
+          "path": "frontend/src/pages/public/CommitteePage.tsx",
+          "operation": "create",
+          "description": "Create the public Committee Members page (heading “ಸಮಿತಿ / Committee”)."
+        },
+        {
+          "path": "frontend/src/pages/public/JatreFestivalsPage.tsx",
+          "operation": "create",
+          "description": "Create the public Jatre/Festivals page (heading “ಜಾತ್ರೆ / Jatre & Festivals”)."
+        },
+        {
+          "path": "frontend/src/pages/public/GalleryPage.tsx",
+          "operation": "create",
+          "description": "Create the public Gallery page (heading “ಗ್ಯಾಲರಿ / Gallery”)."
+        },
+        {
+          "path": "frontend/src/pages/public/ContactsPage.tsx",
+          "operation": "create",
+          "description": "Create the public Contact Numbers page (heading “ಸಂಪರ್ಕ ಸಂಖ್ಯೆ / Contact Numbers”)."
+        },
+        {
+          "path": "frontend/src/pages/public/LocationPage.tsx",
+          "operation": "create",
+          "description": "Create the public Location page (heading “ಸ್ಥಳ / Location”)."
+        }
+      ]
+    },
+    {
+      "id": "REQ-2",
+      "summary": "Add Internet Identity login UX and enforce admin-only access for all admin routes in the frontend.",
+      "acceptanceCriteria": [
+        "Admin pages cannot be accessed by unauthenticated users (redirect to login).",
+        "Backend rejects admin-only calls from non-admin principals.",
+        "Public endpoints never return individual donor details or member mobile numbers.",
+        "Admin identity is based on Internet Identity principal and an admin allowlist stored in the backend."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/components/auth/LoginButton.tsx",
+          "operation": "create",
+          "description": "Implement a login/logout button using the existing Internet Identity hook. Use the selected authorization component’s frontend guidance for login/logout cache clearing behavior. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/hooks/useAdminStatus.ts",
+          "operation": "create",
+          "description": "Create a hook that uses the actor to determine whether the current caller is an admin (e.g., via isCallerAdmin/getCallerUserRole) and exposes loading/authorized states; handle authorization trap errors gracefully per the selected authorization component guidance. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/components/auth/AdminRoute.tsx",
+          "operation": "create",
+          "description": "Create an admin-only route guard that blocks unauthenticated/unauthorized access, redirects to an admin login screen, and shows an Access Denied screen when logged in but not an admin."
+        },
+        {
+          "path": "frontend/src/pages/admin/AdminLoginPage.tsx",
+          "operation": "create",
+          "description": "Create an Admin Login page that prompts Internet Identity login and explains admin-only access."
+        },
+        {
+          "path": "frontend/src/pages/admin/AdminHomePage.tsx",
+          "operation": "create",
+          "description": "Create an admin landing page with navigation to admin sections (balance dashboard, approvals, donor list, committee, contacts, jatre, gallery, receipts)."
+        },
+        {
+          "path": "frontend/src/App.tsx",
+          "operation": "modify",
+          "description": "Wire admin routes under an /admin path and wrap all admin pages with AdminRoute guard (no admin pages accessible publicly)."
+        }
+      ]
+    },
+    {
+      "id": "REQ-3",
+      "summary": "Add public donation button that opens the UPI deep link and shows post-click instructions.",
+      "acceptanceCriteria": [
+        "Donation button uses the exact text provided.",
+        "Clicking the button attempts to open the `upi://` link with the configured `{temple_upi_id}` value.",
+        "A visible instruction message appears after the donation link is opened (or after click, if the browser blocks the deep link).",
+        "UI indicates support for PhonePe, Google Pay, and any UPI app (text-only)."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/config/temple.ts",
+          "operation": "create",
+          "description": "Add a single source of truth for temple constants including temple UPI ID, fixed temple name, and location."
+        },
+        {
+          "path": "frontend/src/pages/public/DonationsPage.tsx",
+          "operation": "modify",
+          "description": "Add the exact donation button text “Donate to Shree Doddamma Devi Temple” that opens the configured UPI deep link and shows the instruction message “Please submit your payment details to generate receipt” after click; include text-only note for PhonePe, Google Pay, and any UPI app."
+        }
+      ]
+    },
+    {
+      "id": "REQ-4",
+      "summary": "Implement public Payment Confirmation form UI with validation and submission to backend; no public list view.",
+      "acceptanceCriteria": [
+        "Form validates required fields and basic formats (mobile number, amount > 0, date).",
+        "A successful submission creates a persisted backend record with status = Pending verification.",
+        "User sees a confirmation state after submission (e.g., “Submitted for verification”).",
+        "Public users cannot view the list of submitted payment confirmations."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/pages/public/PaymentConfirmationPage.tsx",
+          "operation": "modify",
+          "description": "Implement the Payment Confirmation Form fields (donor name, mobile, amount, payment mode, transaction ID, date), validate inputs, submit via the backend actor submitPaymentConfirmation, and show a post-submit confirmation state; do not add any UI to browse submitted confirmations."
+        },
+        {
+          "path": "frontend/src/utils/formatters.ts",
+          "operation": "create",
+          "description": "Add formatting/parsing helpers for bigint currency display and Time/date conversion used by the confirmation form and reporting views."
+        }
+      ]
+    },
+    {
+      "id": "REQ-5",
+      "summary": "Create admin Payment Approval Panel UI to view pending payments, edit entries, and approve/reject.",
+      "acceptanceCriteria": [
+        "Admin can filter/view Pending verification entries.",
+        "Admin can edit an entry’s fields before final decision (auditably persisted).",
+        "Approving an entry changes status to Approved and increases temple balance by the entry amount exactly once.",
+        "Rejecting an entry changes status to Rejected and does not change temple balance.",
+        "Backend prevents double-approval/double-balance updates for the same payment entry."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/pages/admin/PaymentApprovalsPage.tsx",
+          "operation": "create",
+          "description": "Create an admin-only approvals page that lists pending payments from getPendingPayments, supports selecting a payment, editing fields via editPaymentConfirmation, and approving/rejecting via approvePayment/rejectPayment; handle and display backend authorization/validation errors."
+        },
+        {
+          "path": "frontend/src/components/admin/PaymentEditorDialog.tsx",
+          "operation": "create",
+          "description": "Create a dialog/form component for admins to edit a pending payment’s fields before taking action (approve/reject)."
+        },
+        {
+          "path": "frontend/src/App.tsx",
+          "operation": "modify",
+          "description": "Wire the admin Payment Approvals route into the /admin navigation and protect it with AdminRoute."
+        }
+      ]
+    },
+    {
+      "id": "REQ-6",
+      "summary": "Add an admin-only balance dashboard UI showing current balance and last updated time.",
+      "acceptanceCriteria": [
+        "Admin dashboard displays current balance and last updated timestamp.",
+        "Balance is updated when a payment is approved (and only then).",
+        "Public users cannot access the admin balance dashboard or any endpoint returning the balance history beyond public total collection amount."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/pages/admin/BalanceDashboardPage.tsx",
+          "operation": "create",
+          "description": "Create an admin-only balance dashboard that fetches and displays getTempleAccountBalance (balance + lastUpdated) and provides a refresh action."
+        },
+        {
+          "path": "frontend/src/pages/admin/AdminHomePage.tsx",
+          "operation": "modify",
+          "description": "Add a clear navigation tile/link to the Balance Dashboard and show it only within the admin portal."
+        },
+        {
+          "path": "frontend/src/App.tsx",
+          "operation": "modify",
+          "description": "Wire the balance dashboard route under /admin and protect it with AdminRoute."
+        }
+      ]
+    },
+    {
+      "id": "REQ-7",
+      "summary": "Provide a receipt view with PDF export, print, and WhatsApp sharing based on stored receipt data.",
+      "acceptanceCriteria": [
+        "Approving a payment creates exactly one receipt record with a monotonically increasing receipt number.",
+        "Receipt details match the approved payment data and fixed temple/receiver/location text.",
+        "Receipt can be exported to a PDF file from the UI.",
+        "Receipt is printable via the browser print flow.",
+        "Receipt can be shared to WhatsApp via a share action (Web Share API where available and/or a WhatsApp share link to a receipt view)."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/package.json",
+          "operation": "modify",
+          "description": "Add any required frontend-only dependencies to support client-side receipt PDF export from the receipt view (and ensure build remains functional)."
+        },
+        {
+          "path": "frontend/src/pages/admin/ReceiptViewPage.tsx",
+          "operation": "create",
+          "description": "Create an admin-only receipt view that loads receipt data via getReceipt and renders required receipt fields (including fixed temple name, receiver, location); provide actions for export to PDF, print, and share to WhatsApp."
+        },
+        {
+          "path": "frontend/src/components/receipts/ReceiptCard.tsx",
+          "operation": "create",
+          "description": "Create a reusable receipt rendering component used by receipt view and export/print flows."
+        },
+        {
+          "path": "frontend/src/utils/receiptExport.ts",
+          "operation": "create",
+          "description": "Implement receipt export helpers used to generate a downloadable PDF and to trigger browser print from the receipt UI."
+        },
+        {
+          "path": "frontend/src/utils/share.ts",
+          "operation": "create",
+          "description": "Add share helpers that use Web Share API when available and fall back to a WhatsApp share link to the receipt view URL."
+        },
+        {
+          "path": "frontend/src/App.tsx",
+          "operation": "modify",
+          "description": "Wire the receipt view route (e.g., /admin/receipts/:receiptNumber) into the router and protect it with AdminRoute."
+        }
+      ]
+    },
+    {
+      "id": "REQ-8",
+      "summary": "Add admin receipt management UI: regenerate export and cancel receipt with explicit balance rule messaging.",
+      "acceptanceCriteria": [
+        "Admin can open an approved payment/receipt and trigger regenerate receipt export.",
+        "Admin can cancel a receipt and the receipt status is persisted.",
+        "Cancelled receipts are visibly marked as cancelled and not presented as valid/active to share/print without the cancelled watermark/state.",
+        "System behavior regarding balance when cancelling is clearly shown in the admin UI and enforced by backend logic."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/pages/admin/ReceiptViewPage.tsx",
+          "operation": "modify",
+          "description": "Add actions: regenerate (use regenerateReceipt and then allow export again) and cancel (use cancelReceipt). Show prominent cancelled state/watermark and disable/guard share/print/export unless clearly marked as cancelled. Explicitly display the cancellation balance rule in the UI (e.g., “Cancelling a receipt does not adjust balance”)."
+        },
+        {
+          "path": "frontend/src/components/receipts/ReceiptStatusBanner.tsx",
+          "operation": "create",
+          "description": "Add a status banner component that clearly communicates active vs cancelled receipt state and the balance implication rule shown to admins."
+        }
+      ]
+    },
+    {
+      "id": "REQ-9",
+      "summary": "Implement donation reporting with privacy: public total collection only; admin donor list with full details.",
+      "acceptanceCriteria": [
+        "Admin list shows all relevant donation fields and status.",
+        "Public total collection page shows aggregate total only (no donor names, no transaction IDs, no mobile numbers).",
+        "Backend provides separate admin/public query methods (or a single method that enforces redaction based on caller role) so public callers cannot retrieve donor-identifying fields."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/pages/public/TotalCollectionPage.tsx",
+          "operation": "modify",
+          "description": "Fetch and render only aggregate totals using getDonationReport; ensure no donor-identifying fields are shown on the public page."
+        },
+        {
+          "path": "frontend/src/pages/admin/DonorListPage.tsx",
+          "operation": "create",
+          "description": "Create an admin-only donor list page that loads getDonorList and displays donor name, amount, date, payment mode, and transaction ID; include basic filtering/sorting for admin usability."
+        },
+        {
+          "path": "frontend/src/App.tsx",
+          "operation": "modify",
+          "description": "Wire the admin donor list route under /admin and protect it with AdminRoute; add it to admin navigation."
+        }
+      ]
+    },
+    {
+      "id": "REQ-10",
+      "summary": "Implement committee member management UI (admin CRUD) and public committee display without mobile numbers.",
+      "acceptanceCriteria": [
+        "Admin CRUD for committee members is available in the admin portal.",
+        "Public committee page displays name + role only.",
+        "Public cannot access any API that returns committee mobile numbers."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/pages/public/CommitteePage.tsx",
+          "operation": "modify",
+          "description": "Fetch and display committee members using getCommitteeMembers (public type) showing only name and role."
+        },
+        {
+          "path": "frontend/src/pages/admin/CommitteeManagementPage.tsx",
+          "operation": "create",
+          "description": "Create an admin-only committee management page that uses getCommitteeMembersAdmin to list members with mobile numbers and supports add/edit/remove using addCommitteeMember/editCommitteeMember/removeCommitteeMember."
+        },
+        {
+          "path": "frontend/src/App.tsx",
+          "operation": "modify",
+          "description": "Wire committee management under /admin and protect it with AdminRoute; add to admin navigation."
+        }
+      ]
+    },
+    {
+      "id": "REQ-11",
+      "summary": "Implement Jatre/Festival management (admin CRUD) and public browsing of all jatre details.",
+      "acceptanceCriteria": [
+        "Admin CRUD for jatre entries works and persists.",
+        "Public page lists all jatre entries and shows full details.",
+        "Jatre entries are visible without login."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/pages/public/JatreFestivalsPage.tsx",
+          "operation": "modify",
+          "description": "Fetch and render all jatres via getJatres with full details (name, date, description, activities) on a public page."
+        },
+        {
+          "path": "frontend/src/pages/admin/JatreManagementPage.tsx",
+          "operation": "create",
+          "description": "Create an admin-only jatre management page to add/edit/remove entries using addJatre/editJatre/removeJatre."
+        },
+        {
+          "path": "frontend/src/App.tsx",
+          "operation": "modify",
+          "description": "Wire jatre management under /admin and protect it with AdminRoute; add to admin navigation."
+        }
+      ]
+    },
+    {
+      "id": "REQ-12",
+      "summary": "Implement temple contact numbers management (admin) and public display with tel: links.",
+      "acceptanceCriteria": [
+        "Admin can set/update temple and committee contact numbers.",
+        "Public page shows the latest saved numbers.",
+        "Numbers are clickable on mobile (tel: links)."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/pages/public/ContactsPage.tsx",
+          "operation": "modify",
+          "description": "Fetch contacts via getContacts and render at least temple and committee contact numbers as mobile-friendly tel: links."
+        },
+        {
+          "path": "frontend/src/pages/admin/ContactsManagementPage.tsx",
+          "operation": "create",
+          "description": "Create an admin-only contacts management page that lists contacts via getContacts and supports add/edit/remove using addContact/editContact/removeContact; ensure at least two contact types are maintained (temple/committee)."
+        },
+        {
+          "path": "frontend/src/App.tsx",
+          "operation": "modify",
+          "description": "Wire contacts management under /admin and protect it with AdminRoute; add to admin navigation."
+        }
+      ]
+    },
+    {
+      "id": "REQ-13",
+      "summary": "Create gallery browsing (public) and admin gallery item creation via upload and/or URL using IC-compatible blob storage.",
+      "acceptanceCriteria": [
+        "Admin can add photo items and video items and they persist.",
+        "Public gallery page loads and renders all saved items.",
+        "If uploads are supported, the UI enforces size/type constraints; if links are supported, the UI validates URL format.",
+        "No admin-only metadata (if any) is exposed publicly."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/pages/public/GalleryPage.tsx",
+          "operation": "modify",
+          "description": "Fetch gallery items via getGalleryItems and render media using ExternalBlob.getDirectURL for efficient streaming/caching. Verify the selected blob-storage component’s usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/pages/admin/GalleryManagementPage.tsx",
+          "operation": "create",
+          "description": "Create an admin-only gallery management page to add/edit/remove items. Use the selected blob-storage component’s ExternalBlob.fromBytes/fromURL for uploads/URL entries and show upload progress via withUploadProgress. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/components/gallery/GalleryUploader.tsx",
+          "operation": "create",
+          "description": "Add a reusable uploader that validates file types/sizes for photos/videos, supports URL mode with basic validation, and constructs ExternalBlob for submission. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/App.tsx",
+          "operation": "modify",
+          "description": "Wire gallery management under /admin and protect it with AdminRoute; add to admin navigation."
+        }
+      ]
+    },
+    {
+      "id": "REQ-14",
+      "summary": "Add public Location section with embedded Google Map and Navigate button to directions.",
+      "acceptanceCriteria": [
+        "Location page shows an embedded map (iframe/embed) for the temple location.",
+        "Navigate button opens Google Maps directions in a new tab/app where possible.",
+        "This section is accessible publicly without login."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/pages/public/LocationPage.tsx",
+          "operation": "modify",
+          "description": "Embed a Google Maps iframe for Bommenahalli Vaddarahatti, Karnataka, India, and add a “Navigate” button that opens Google Maps directions in a new tab/window."
+        }
+      ]
+    },
+    {
+      "id": "REQ-15",
+      "summary": "Ensure UI flow reflects manual verification workflow only and avoids any automatic payment verification messaging/features.",
+      "acceptanceCriteria": [
+        "No integration is implemented that attempts to auto-verify UPI payments.",
+        "Admin approval is the only trigger for receipt issuance and balance update.",
+        "UI text and flow reflect that receipts require manual verification."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/pages/public/DonationsPage.tsx",
+          "operation": "modify",
+          "description": "Add clear English guidance text describing the required workflow: pay via UPI app → submit confirmation form → admin manual verification → receipt after approval; avoid any text implying automatic verification."
+        },
+        {
+          "path": "frontend/src/pages/public/PaymentConfirmationPage.tsx",
+          "operation": "modify",
+          "description": "Add UI copy that submissions are “Pending verification” and that receipt generation happens only after manual admin approval."
+        },
+        {
+          "path": "frontend/src/pages/admin/PaymentApprovalsPage.tsx",
+          "operation": "modify",
+          "description": "Add admin-facing UI text confirming that verification is manual and that approve/reject is the single decision point before receipt/balance changes."
+        }
+      ]
+    },
+    {
+      "id": "REQ-16",
+      "summary": "Apply a cohesive devotional, peaceful theme with light background, temple-style visuals, and bilingual headings across the app.",
+      "acceptanceCriteria": [
+        "Theme is consistent across public and admin areas (admin can be more utilitarian but still cohesive).",
+        "Headings include Kannada + English; body content remains English.",
+        "Layout is usable on small mobile screens without horizontal scrolling.",
+        "No default “blue/purple” look dominates the UI (use a different palette consistent with devotional theme)."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/public/assets/generated/temple-crest.dim_512x512.png",
+          "operation": "create",
+          "description": "Add the generated temple crest asset at the specified path and use it in the UI branding (header/footer)."
+        },
+        {
+          "path": "frontend/public/assets/generated/bg-pattern.dim_1600x900.png",
+          "operation": "create",
+          "description": "Add the generated subtle devotional background pattern at the specified path and apply it to the public layout background."
+        },
+        {
+          "path": "frontend/public/assets/generated/temple-icons-sprite.dim_1024x1024.png",
+          "operation": "create",
+          "description": "Add the generated icon sprite at the specified path and use it for section tiles/links (donation, receipt, committee, festival, gallery, location)."
+        },
+        {
+          "path": "frontend/src/index.css",
+          "operation": "create",
+          "description": "Define global theme tokens (light background, devotional palette, typography, spacing) and apply background pattern usage for the public layout; keep admin styling cohesive but more utilitarian."
+        },
+        {
+          "path": "frontend/tailwind.config.js",
+          "operation": "modify",
+          "description": "Extend Tailwind theme with devotional color tokens (avoid default blue/purple dominance) and consistent radii/shadows suitable for a peaceful look."
+        },
+        {
+          "path": "frontend/src/components/layout/PublicLayout.tsx",
+          "operation": "modify",
+          "description": "Wire generated assets (frontend/public/assets/generated/temple-crest.dim_512x512.png and frontend/public/assets/generated/bg-pattern.dim_1600x900.png) into the layout for consistent branding and background."
+        },
+        {
+          "path": "frontend/src/components/nav/PublicNav.tsx",
+          "operation": "modify",
+          "description": "Use the generated icon sprite (frontend/public/assets/generated/temple-icons-sprite.dim_1024x1024.png) for navigation/section tiles while keeping bilingual headings and English body text."
+        }
+      ]
+    }
+  ]
+}

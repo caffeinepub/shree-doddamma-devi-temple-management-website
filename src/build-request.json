@@ -1,0 +1,333 @@
+{
+  "kind": "build_request",
+  "title": "Shree Doddamma Devi Temple — Public Site + Secure Admin Portal for Donations, Receipts, and Temple Management",
+  "priority": "normal",
+  "requirements": [
+    {
+      "id": "REQ-1",
+      "text": "Create a public-facing, mobile-first website for “Shree Doddamma Devi Temple” (Bommenahalli Vaddarahatti, Karnataka, India) with clear navigation to: Donations, Payment Confirmation, Total Collection, Committee Members, Jatre/Festivals, Gallery, Contact Numbers, and Location.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-2"
+        ],
+        "quotes": [
+          "Create a secure, mobile-friendly and simple temple management website",
+          "CORE SECTIONS (Public + Admin system)"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Public pages are accessible without login on mobile and desktop.",
+        "Public navigation includes links to all required public sections.",
+        "All public pages display temple name and location somewhere in the UI.",
+        "Public content is in English; section headings include Kannada + English (e.g., “ದಾನ / Donations”)."
+      ]
+    },
+    {
+      "id": "REQ-2",
+      "text": "Implement secure admin authentication using Internet Identity and enforce admin-only access to all admin routes and admin-only data/actions (balance dashboard, payment approvals, donor list, member mobiles, contacts management, jatre management, gallery management, receipt admin actions).",
+      "target": "both",
+      "source": {
+        "messageIds": [
+          "msg-2"
+        ],
+        "quotes": [
+          "12. Secure Admin Panel\nCreate secure admin login.",
+          "13. Privacy & Security Rules",
+          "Public users must NOT see:\nindividual donor details\nmember mobile numbers\nadmin dashboard"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Admin pages cannot be accessed by unauthenticated users (redirect to login).",
+        "Backend rejects admin-only calls from non-admin principals.",
+        "Public endpoints never return individual donor details or member mobile numbers.",
+        "Admin identity is based on Internet Identity principal and an admin allowlist stored in the backend."
+      ]
+    },
+    {
+      "id": "REQ-3",
+      "text": "Add a public donation button with the exact button text “Donate to Shree Doddamma Devi Temple” that opens the UPI deep link format: `upi://pay?pa={temple_upi_id}&pn=ShreeDoddammaDeviTemple`, and show the message “Please submit your payment details to generate receipt” after the user clicks/opens the donation link.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-2"
+        ],
+        "quotes": [
+          "2. Online Payment / Donation Link (Public)\nAdd a donation button:\nButton text:\nDonate to Shree Doddamma Devi Temple\nUse UPI deep link format:\nupi://pay?pa={temple_upi_id}&pn=ShreeDoddammaDeviTemple",
+          "After payment show message:\n“Please submit your payment details to generate receipt”"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Donation button uses the exact text provided.",
+        "Clicking the button attempts to open the `upi://` link with the configured `{temple_upi_id}` value.",
+        "A visible instruction message appears after the donation link is opened (or after click, if the browser blocks the deep link).",
+        "UI indicates support for PhonePe, Google Pay, and any UPI app (text-only)."
+      ]
+    },
+    {
+      "id": "REQ-4",
+      "text": "Create a public Payment Confirmation Form with fields: Donor name, Mobile number, Amount paid, Payment mode (PhonePe / GPay / UPI / Cash / Cheque), Transaction ID, Date. On submit, save the entry in the backend with status set to “Pending verification”.",
+      "target": "both",
+      "source": {
+        "messageIds": [
+          "msg-2"
+        ],
+        "quotes": [
+          "3. Payment Confirmation Form (Public)\nFields:\nDonor name\nMobile number\nAmount paid\nPayment mode (PhonePe / GPay / UPI / Cash / Cheque)\nTransaction ID\nDate\nAfter submit:\nSave entry\nMark status as “Pending verification”"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Form validates required fields and basic formats (mobile number, amount > 0, date).",
+        "A successful submission creates a persisted backend record with status = Pending verification.",
+        "User sees a confirmation state after submission (e.g., “Submitted for verification”).",
+        "Public users cannot view the list of submitted payment confirmations."
+      ]
+    },
+    {
+      "id": "REQ-5",
+      "text": "Implement an Admin Payment Approval Panel where the admin can view all pending payments, inspect details, edit incorrect entries, and approve or reject entries. Only after approval: update the temple account balance by adding the approved amount and change the status to “Approved”. Rejected entries must be marked “Rejected” and must not affect balance.",
+      "target": "both",
+      "source": {
+        "messageIds": [
+          "msg-2"
+        ],
+        "quotes": [
+          "4. Admin Payment Approval Panel\nAdmin (President) can:\nview all pending payments\nverify payment\napprove or reject\nedit wrong entries\nOnly after approval:\namount must be added to temple balance\nstatus changes to “Approved”"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Admin can filter/view Pending verification entries.",
+        "Admin can edit an entry’s fields before final decision (auditably persisted).",
+        "Approving an entry changes status to Approved and increases temple balance by the entry amount exactly once.",
+        "Rejecting an entry changes status to Rejected and does not change temple balance.",
+        "Backend prevents double-approval/double-balance updates for the same payment entry."
+      ]
+    },
+    {
+      "id": "REQ-6",
+      "text": "Add an Admin-only Temple Account Balance Dashboard showing: current temple balance and last updated date & time. Ensure balance changes only occur via admin approval workflow (approved payments) and any explicit admin balance adjustment action (if provided).",
+      "target": "both",
+      "source": {
+        "messageIds": [
+          "msg-2"
+        ],
+        "quotes": [
+          "1. Temple Account Balance Dashboard (Admin only)\nShow current temple balance\nShow last updated date & time\nBalance updates only after admin approval"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Admin dashboard displays current balance and last updated timestamp.",
+        "Balance is updated when a payment is approved (and only then).",
+        "Public users cannot access the admin balance dashboard or any endpoint returning the balance history beyond public total collection amount."
+      ]
+    },
+    {
+      "id": "REQ-7",
+      "text": "After admin approval of a payment, automatically generate a receipt record with an auto-running receipt number and required receipt fields: Temple name “Shree Doddamma Devi Temple”, receipt number, date, donor name, amount, payment mode, transaction ID, receiver “Ravi Kumar V C – President”, location “Bommenahalli Vaddarahatti”. Provide a receipt view that is downloadable as PDF, printable, and shareable to WhatsApp.",
+      "target": "both",
+      "source": {
+        "messageIds": [
+          "msg-2"
+        ],
+        "quotes": [
+          "5. Auto Generate Receipt (PDF)\nAfter admin approval:\nAutomatically generate receipt with:\nTemple name: Shree Doddamma Devi Temple\nReceipt number (auto running)\nDate\nDonor name\nAmount\nPayment mode\nTransaction ID\nReceiver: Ravi Kumar V C – President\nLocation: Bommenahalli Vaddarahatti\nReceipt features:\ndownloadable PDF\nprintable\nshareable on WhatsApp"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Approving a payment creates exactly one receipt record with a monotonically increasing receipt number.",
+        "Receipt details match the approved payment data and fixed temple/receiver/location text.",
+        "Receipt can be exported to a PDF file from the UI.",
+        "Receipt is printable via the browser print flow.",
+        "Receipt can be shared to WhatsApp via a share action (Web Share API where available and/or a WhatsApp share link to a receipt view)."
+      ]
+    },
+    {
+      "id": "REQ-8",
+      "text": "Add admin receipt management actions: regenerate receipt (recreate PDF/export based on stored receipt data) and cancel wrong receipt. Cancelling a receipt must mark it cancelled and prevent it from being presented as an active receipt; define and implement a consistent rule for whether cancelling also reverses balance impact (must be explicit in UI).",
+      "target": "both",
+      "source": {
+        "messageIds": [
+          "msg-2"
+        ],
+        "quotes": [
+          "Admin can:\nregenerate receipt\ncancel wrong receipt"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Admin can open an approved payment/receipt and trigger regenerate receipt export.",
+        "Admin can cancel a receipt and the receipt status is persisted.",
+        "Cancelled receipts are visibly marked as cancelled and not presented as valid/active to share/print without the cancelled watermark/state.",
+        "System behavior regarding balance when cancelling is clearly shown in the admin UI and enforced by backend logic."
+      ]
+    },
+    {
+      "id": "REQ-9",
+      "text": "Implement donation reporting with strict privacy: Admin can view a full donor/payment list including amount, date, payment mode, transaction ID. Public users can view only the total collection amount (aggregate), with no individual donor details.",
+      "target": "both",
+      "source": {
+        "messageIds": [
+          "msg-2"
+        ],
+        "quotes": [
+          "6. Donor / Amount Details\nAdmin view:\nfull donor list\namount\ndate\nmode\ntransaction ID\nPublic view:\nonly total collection amount\nno individual donor names",
+          "13. Privacy & Security Rules"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Admin list shows all relevant donation fields and status.",
+        "Public total collection page shows aggregate total only (no donor names, no transaction IDs, no mobile numbers).",
+        "Backend provides separate admin/public query methods (or a single method that enforces redaction based on caller role) so public callers cannot retrieve donor-identifying fields."
+      ]
+    },
+    {
+      "id": "REQ-10",
+      "text": "Implement Member/Committee management: Admin can add/edit/remove committee members with fields (name, role: President/Secretary/Member, mobile number). Public page shows only name and role; admin view shows mobile numbers.",
+      "target": "both",
+      "source": {
+        "messageIds": [
+          "msg-2"
+        ],
+        "quotes": [
+          "7. Member / Committee Details\nStore and manage:\nPresident\nSecretary\nMember\nFields:\nname\nrole\nmobile number\nPublic view:\nonly name and role\nAdmin view:\nfull mobile numbers"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Admin CRUD for committee members is available in the admin portal.",
+        "Public committee page displays name + role only.",
+        "Public cannot access any API that returns committee mobile numbers."
+      ]
+    },
+    {
+      "id": "REQ-11",
+      "text": "Implement Jatre/Festival management: Admin can add/edit/remove jatre entries with fields (jatre/festival name, date, description, activities). Public users can view all jatre details.",
+      "target": "both",
+      "source": {
+        "messageIds": [
+          "msg-2"
+        ],
+        "quotes": [
+          "8. Jatre / Festival Details\nAdmin can add:\njatre / festival name\ndate\ndescription\nactivities\nPublic can view all jatre details."
+        ]
+      },
+      "acceptanceCriteria": [
+        "Admin CRUD for jatre entries works and persists.",
+        "Public page lists all jatre entries and shows full details.",
+        "Jatre entries are visible without login."
+      ]
+    },
+    {
+      "id": "REQ-12",
+      "text": "Implement Temple Contact Numbers section: Admin can manage at least two contact numbers (temple contact number, committee contact number). Public page displays these numbers clearly.",
+      "target": "both",
+      "source": {
+        "messageIds": [
+          "msg-2"
+        ],
+        "quotes": [
+          "9. Temple Contact Numbers\nPublic:\ntemple contact number\ncommittee contact number"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Admin can set/update temple and committee contact numbers.",
+        "Public page shows the latest saved numbers.",
+        "Numbers are clickable on mobile (tel: links)."
+      ]
+    },
+    {
+      "id": "REQ-13",
+      "text": "Implement a Temple Photos & Videos Gallery: Admin can add items via upload (with reasonable size limits) and/or by providing a direct URL; Public users can browse the gallery. Ensure the solution works within Internet Computer constraints and does not rely on external databases.",
+      "target": "both",
+      "source": {
+        "messageIds": [
+          "msg-2"
+        ],
+        "quotes": [
+          "10. Temple Photos & Videos Gallery\nAdmin can:\nupload photos\nupload videos\nPublic can:\nview gallery"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Admin can add photo items and video items and they persist.",
+        "Public gallery page loads and renders all saved items.",
+        "If uploads are supported, the UI enforces size/type constraints; if links are supported, the UI validates URL format.",
+        "No admin-only metadata (if any) is exposed publicly."
+      ]
+    },
+    {
+      "id": "REQ-14",
+      "text": "Add a Temple Location section with an embedded Google Map and a “Navigate” button that opens navigation directions for the temple location (Bommenahalli Vaddarahatti, Karnataka, India).",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-2"
+        ],
+        "quotes": [
+          "11. Temple Location\nEmbed Google map\nNavigation button"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Location page shows an embedded map (iframe/embed) for the temple location.",
+        "Navigate button opens Google Maps directions in a new tab/app where possible.",
+        "This section is accessible publicly without login."
+      ]
+    },
+    {
+      "id": "REQ-15",
+      "text": "Enforce the required workflow and explicitly avoid automatic payment gateway verification: Payment (external via UPI app) → user submits confirmation form → admin manually verifies → admin approves/rejects → receipt auto generated on approval → balance auto updated on approval.",
+      "target": "both",
+      "source": {
+        "messageIds": [
+          "msg-2"
+        ],
+        "quotes": [
+          "15. Important technical rule\nDo NOT use automatic payment gateway verification.\nUse this workflow only:\nPayment → user submits form →\nadmin verifies → approves →\nreceipt auto generated →\nbalance auto updated."
+        ]
+      },
+      "acceptanceCriteria": [
+        "No integration is implemented that attempts to auto-verify UPI payments.",
+        "Admin approval is the only trigger for receipt issuance and balance update.",
+        "UI text and flow reflect that receipts require manual verification."
+      ]
+    },
+    {
+      "id": "REQ-16",
+      "text": "Apply a consistent, devotional, peaceful visual theme with a light background, simple layout, traditional temple-style iconography, and mobile-first spacing/typography. Use English body text and Kannada + English mixed headings across sections.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-2"
+        ],
+        "quotes": [
+          "14. Design Requirements\ndevotional and peaceful look\ntraditional temple style icons\nlight background\nsimple layout\nmobile first\nKannada + English mixed headings",
+          "16. Language preference\nMain content in English\nSection headings in Kannada + English."
+        ]
+      },
+      "acceptanceCriteria": [
+        "Theme is consistent across public and admin areas (admin can be more utilitarian but still cohesive).",
+        "Headings include Kannada + English; body content remains English.",
+        "Layout is usable on small mobile screens without horizontal scrolling.",
+        "No default “blue/purple” look dominates the UI (use a different palette consistent with devotional theme)."
+      ]
+    }
+  ],
+  "constraints": [
+    "Backend must remain a single Motoko actor (no additional backend services).",
+    "Do not edit any files under frontend immutable paths (frontend/src/hooks/useInternetIdentity.ts, frontend/src/hooks/useInternetIdentity.tsx, frontend/src/hooks/useActor.ts, frontend/src/main.tsx, frontend/src/components/ui). Compose with them instead.",
+    "Public users must not be able to access admin dashboard routes or retrieve private data (donor details, member mobile numbers, admin-only financial details).",
+    "Do not implement automatic payment verification or payment gateway integrations; use the manual verification workflow only.",
+    "Use English for any user-facing text in this build request’s specified UI behavior; app content must be English with Kannada+English headings."
+  ],
+  "nonGoals": [
+    "Building an Android app now (the web app should be mobile-friendly and future-ready only).",
+    "Integrating third-party authentication other than Internet Identity.",
+    "Integrating any automatic UPI/payment provider verification.",
+    "Adding real-time chat, push notifications, or email/SMS messaging."
+  ],
+  "imageRequirements": {
+    "required": [
+      "Temple emblem/crest illustration with simple traditional line-art (temple-crest.dim_512x512.png)",
+      "Subtle devotional background pattern (e.g., faint mandala/lotus) on light tone (bg-pattern.dim_1600x900.png)",
+      "Set of 6 simple traditional temple-style icons (donation, receipt, committee, festival, gallery, location) in consistent stroke style (temple-icons-sprite.dim_1024x1024.png)"
+    ],
+    "edits": []
+  }
+}

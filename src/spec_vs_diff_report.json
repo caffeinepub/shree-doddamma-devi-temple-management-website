@@ -1,0 +1,98 @@
+{
+  "kind": "spec_vs_diff_report",
+  "version": "1.0",
+  "generatedAt": "2026-02-07T19:45:59.064Z",
+  "summary": "Diff adds a new Motoko backend actor with types/storage for payments, receipts, committee, jatre, contacts, and gallery, plus a TanStack Router-based frontend with public/admin layouts and an admin route guard using Internet Identity. However, several BuildRequest requirements cannot be confirmed from the truncated/omitted diffs (notably donation UI, payment confirmation form UI validation, receipt PDF/WhatsApp sharing, and receipt cancellation/regeneration logic). The diff also introduces a secret-token-based access-control initialization and adds files under paths declared immutable in the BuildRequest constraints.",
+  "missing_requirements": [
+    {
+      "id": "REQ-3",
+      "requirement": "Public donation button with exact text “Donate to Shree Doddamma Devi Temple” that opens the specified `upi://` deep link and shows the post-click message and UPI app support text.",
+      "reason": "The diff does not include the Donations page implementation (UI/button text, deep link behavior, and post-click message are not shown). Only routing to DonationsPage is visible.",
+      "evidence": [
+        "frontend/src/App.tsx (routes reference DonationsPage, but DonationsPage code not shown)",
+        "frontend/src/config/temple.ts (upiId exists, but no evidence of deep-link usage)"
+      ]
+    },
+    {
+      "id": "REQ-7",
+      "requirement": "Receipt view that is downloadable as PDF, printable, and shareable to WhatsApp after admin approval; receipt fields must match required fixed text and approved payment data.",
+      "reason": "Although routing references a ReceiptViewPage and backend defines a Receipt type, the diff provides no visible implementation for PDF export, print flow, or WhatsApp sharing actions, and backend approval→receipt generation logic is truncated.",
+      "evidence": [
+        "frontend/src/App.tsx (imports ReceiptViewPage but page implementation not shown)",
+        "backend/main.mo (Receipt type present, but approval/generation logic is truncated)"
+      ]
+    },
+    {
+      "id": "REQ-8",
+      "requirement": "Admin receipt actions: regenerate receipt and cancel receipt (persist cancelled status, watermark/invalid state, and explicit/enforced rule on balance reversal).",
+      "reason": "Receipt cancellation/regeneration endpoints and UI actions are not evidenced in the provided diff. UI note says cancellation does not change balance, but there is no shown backend enforcement or cancel/regenerate functions.",
+      "evidence": [
+        "frontend/src/pages/admin/BalanceDashboardPage.tsx (mentions cancellation does not change balance, but no cancel UI/actions shown)",
+        "backend/main.mo (Receipt has isCancelled field, but no cancel/regenerate methods shown due to truncation)"
+      ]
+    }
+  ],
+  "hallucinated_features": [
+    {
+      "description": "Secret-token-based access control initialization via URL parameter `caffeineAdminToken` and `_initializeAccessControlWithSecret` call.",
+      "reason": "BuildRequest specifies admin authorization based on an Internet Identity principal allowlist stored in the backend; introducing a separate secret token bootstrap mechanism is not requested and could weaken/alter the intended auth model.",
+      "evidence": [
+        "frontend/src/hooks/useActor.ts (getSecretParameter('caffeineAdminToken'); actor._initializeAccessControlWithSecret(adminToken))"
+      ]
+    },
+    {
+      "description": "Added/changed code under paths explicitly marked immutable by the BuildRequest constraints (`frontend/src/hooks/useInternetIdentity.ts`, `frontend/src/hooks/useActor.ts`, `frontend/src/main.tsx`).",
+      "reason": "BuildRequest constraint says not to edit any files under these immutable paths and to compose with them instead; the diff includes new files at these exact paths.",
+      "evidence": [
+        "frontend/src/hooks/useActor.ts",
+        "frontend/src/hooks/useInternetIdentity.ts",
+        "frontend/src/main.tsx"
+      ]
+    }
+  ],
+  "confidence": 0.64,
+  "changed_files": [
+    "all_files_summary.json",
+    "backend/main.mo",
+    "frontend-file-summaries.txt",
+    "frontend/index.css",
+    "frontend/index.html",
+    "frontend/src/App.tsx",
+    "frontend/src/components/auth/AdminRoute.tsx",
+    "frontend/src/components/auth/LoginButton.tsx",
+    "frontend/src/components/layout/AdminLayout.tsx",
+    "frontend/src/components/layout/PublicLayout.tsx",
+    "frontend/src/config/temple.ts",
+    "frontend/src/hooks/useActor.ts",
+    "frontend/src/hooks/useAdminStatus.ts",
+    "frontend/src/hooks/useInternetIdentity.ts",
+    "frontend/src/hooks/useQueries.ts",
+    "frontend/src/index.css",
+    "frontend/src/main.tsx",
+    "frontend/src/pages/admin/AdminHomePage.tsx",
+    "frontend/src/pages/admin/AdminLoginPage.tsx",
+    "frontend/src/pages/admin/BalanceDashboardPage.tsx",
+    "frontend/src/pages/admin/CommitteeManagementPage.tsx",
+    "frontend/src/pages/admin/ContactsManagementPage.tsx",
+    "frontend/src/pages/admin/DonorListPage.tsx",
+    "frontend/src/pages/admin/GalleryManagementPage.tsx",
+    "frontend/src/pages/admin/JatreManagementPage.tsx",
+    "frontend/src/pages/admin/PaymentApprovalsPage.tsx",
+    "frontend/src/pages/admin/ReceiptViewPage.tsx",
+    "frontend/src/pages/public/CommitteePage.tsx",
+    "frontend/src/pages/public/ContactsPage.tsx",
+    "frontend/src/pages/public/DonationsPage.tsx",
+    "frontend/src/pages/public/GalleryPage.tsx",
+    "frontend/src/pages/public/HomePage.tsx",
+    "frontend/src/pages/public/JatreFestivalsPage.tsx",
+    "frontend/src/pages/public/LocationPage.tsx",
+    "frontend/src/pages/public/PaymentConfirmationPage.tsx",
+    "frontend/src/pages/public/TotalCollectionPage.tsx",
+    "frontend/src/utils/formatters.ts",
+    "frontend/src/utils/receiptExport.ts",
+    "frontend/src/utils/share.ts",
+    "frontend/src/utils/urlParams.ts",
+    "frontend/tailwind.config.js",
+    "project_state.json"
+  ]
+}

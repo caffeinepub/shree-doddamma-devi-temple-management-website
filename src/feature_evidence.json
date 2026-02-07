@@ -1,0 +1,361 @@
+{
+  "kind": "feature_evidence_report",
+  "features": [
+    {
+      "featureId": "feature-create-a-public-facing-mobile-first-website-for-shree-doddamma-devi-temple-bommenahalli-vaddarahatti-karnataka-india-with-clear-navigation-to-donations-payment-confirmation-total-collection-committee-members-jatre-festivals-gallery-contact-numbers-and-location",
+      "featureTitle": "Create a public-facing, mobile-first website for “Shree Doddamma Devi Temple” (Bommenahalli Vaddarahatti, Karnataka, India) with clear navigation to: Donations, Payment Confirmation, Total Collection, Committee Members, Jatre/Festivals, Gallery, Contact Numbers, and Location.",
+      "files": [
+        "frontend/src/App.tsx",
+        "frontend/src/components/layout/PublicLayout.tsx",
+        "frontend/src/pages/public/CommitteePage.tsx",
+        "frontend/src/pages/public/ContactsPage.tsx",
+        "frontend/src/pages/public/DonationsPage.tsx",
+        "frontend/src/pages/public/GalleryPage.tsx",
+        "frontend/src/pages/public/JatreFestivalsPage.tsx",
+        "frontend/src/pages/public/LocationPage.tsx",
+        "frontend/src/pages/public/PaymentConfirmationPage.tsx",
+        "frontend/src/pages/public/TotalCollectionPage.tsx"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "blob-storage@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-1"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-implement-secure-admin-authentication-using-internet-identity-and-enforce-admin-only-access-to-all-admin-routes-and-admin-only-data-actions-balance-dashboard-payment-approvals-donor-list-member-mobiles-contacts-management-jatre-management-gallery-management-receipt-admin-actions",
+      "featureTitle": "Implement secure admin authentication using Internet Identity and enforce admin-only access to all admin routes and admin-only data/actions (balance dashboard, payment approvals, donor list, member mobiles, contacts management, jatre management, gallery management, receipt admin actions).",
+      "files": [
+        "frontend/src/App.tsx",
+        "frontend/src/components/auth/AdminRoute.tsx",
+        "frontend/src/components/auth/LoginButton.tsx",
+        "frontend/src/hooks/useAdminStatus.ts",
+        "frontend/src/pages/admin/AdminHomePage.tsx",
+        "frontend/src/pages/admin/AdminLoginPage.tsx"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "blob-storage@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-2"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-add-a-public-donation-button-with-the-exact-button-text-donate-to-shree-doddamma-devi-temple-that-opens-the-upi-deep-link-format-upi-pay-pa-temple-upi-id-pn-shreedoddammadevitemple-and-show-the-message-please-submit-your-payment-details-to-generate-receipt-after-the-user-clicks-opens-the-donation-link",
+      "featureTitle": "Add a public donation button with the exact button text “Donate to Shree Doddamma Devi Temple” that opens the UPI deep link format: `upi://pay?pa={temple_upi_id}&pn=ShreeDoddammaDeviTemple`, and show the message “Please submit your payment details to generate receipt” after the user clicks/opens the donation link.",
+      "files": [
+        "frontend/src/config/temple.ts",
+        "frontend/src/pages/public/DonationsPage.tsx"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "blob-storage@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-3"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-create-a-public-payment-confirmation-form-with-fields-donor-name-mobile-number-amount-paid-payment-mode-phonepe-gpay-upi-cash-cheque-transaction-id-date-on-submit-save-the-entry-in-the-backend-with-status-set-to-pending-verification",
+      "featureTitle": "Create a public Payment Confirmation Form with fields: Donor name, Mobile number, Amount paid, Payment mode (PhonePe / GPay / UPI / Cash / Cheque), Transaction ID, Date. On submit, save the entry in the backend with status set to “Pending verification”.",
+      "files": [
+        "frontend/src/pages/public/PaymentConfirmationPage.tsx",
+        "frontend/src/utils/formatters.ts"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "blob-storage@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-4"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-implement-an-admin-payment-approval-panel-where-the-admin-can-view-all-pending-payments-inspect-details-edit-incorrect-entries-and-approve-or-reject-entries-only-after-approval-update-the-temple-account-balance-by-adding-the-approved-amount-and-change-the-status-to-approved-rejected-entries-must-be-marked-rejected-and-must-not-affect-balance",
+      "featureTitle": "Implement an Admin Payment Approval Panel where the admin can view all pending payments, inspect details, edit incorrect entries, and approve or reject entries. Only after approval: update the temple account balance by adding the approved amount and change the status to “Approved”. Rejected entries must be marked “Rejected” and must not affect balance.",
+      "files": [
+        "frontend/src/App.tsx",
+        "frontend/src/pages/admin/PaymentApprovalsPage.tsx"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "blob-storage@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-5"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-add-an-admin-only-temple-account-balance-dashboard-showing-current-temple-balance-and-last-updated-date-time-ensure-balance-changes-only-occur-via-admin-approval-workflow-approved-payments-and-any-explicit-admin-balance-adjustment-action-if-provided",
+      "featureTitle": "Add an Admin-only Temple Account Balance Dashboard showing: current temple balance and last updated date & time. Ensure balance changes only occur via admin approval workflow (approved payments) and any explicit admin balance adjustment action (if provided).",
+      "files": [
+        "frontend/src/App.tsx",
+        "frontend/src/pages/admin/AdminHomePage.tsx",
+        "frontend/src/pages/admin/BalanceDashboardPage.tsx"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "blob-storage@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-6"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-after-admin-approval-of-a-payment-automatically-generate-a-receipt-record-with-an-auto-running-receipt-number-and-required-receipt-fields-temple-name-shree-doddamma-devi-temple-receipt-number-date-donor-name-amount-payment-mode-transaction-id-receiver-ravi-kumar-v-c-president-location-bommenahalli-vaddarahatti-provide-a-receipt-view-that-is-downloadable-as-pdf-printable-and-shareable-to-whatsapp",
+      "featureTitle": "After admin approval of a payment, automatically generate a receipt record with an auto-running receipt number and required receipt fields: Temple name “Shree Doddamma Devi Temple”, receipt number, date, donor name, amount, payment mode, transaction ID, receiver “Ravi Kumar V C – President”, location “Bommenahalli Vaddarahatti”. Provide a receipt view that is downloadable as PDF, printable, and shareable to WhatsApp.",
+      "files": [
+        "frontend/src/App.tsx",
+        "frontend/src/pages/admin/ReceiptViewPage.tsx",
+        "frontend/src/utils/receiptExport.ts",
+        "frontend/src/utils/share.ts"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "blob-storage@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-7"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-add-admin-receipt-management-actions-regenerate-receipt-recreate-pdf-export-based-on-stored-receipt-data-and-cancel-wrong-receipt-cancelling-a-receipt-must-mark-it-cancelled-and-prevent-it-from-being-presented-as-an-active-receipt-define-and-implement-a-consistent-rule-for-whether-cancelling-also-reverses-balance-impact-must-be-explicit-in-ui",
+      "featureTitle": "Add admin receipt management actions: regenerate receipt (recreate PDF/export based on stored receipt data) and cancel wrong receipt. Cancelling a receipt must mark it cancelled and prevent it from being presented as an active receipt; define and implement a consistent rule for whether cancelling also reverses balance impact (must be explicit in UI).",
+      "files": [
+        "frontend/src/pages/admin/ReceiptViewPage.tsx"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "blob-storage@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-8"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-implement-donation-reporting-with-strict-privacy-admin-can-view-a-full-donor-payment-list-including-amount-date-payment-mode-transaction-id-public-users-can-view-only-the-total-collection-amount-aggregate-with-no-individual-donor-details",
+      "featureTitle": "Implement donation reporting with strict privacy: Admin can view a full donor/payment list including amount, date, payment mode, transaction ID. Public users can view only the total collection amount (aggregate), with no individual donor details.",
+      "files": [
+        "frontend/src/App.tsx",
+        "frontend/src/pages/admin/DonorListPage.tsx",
+        "frontend/src/pages/public/TotalCollectionPage.tsx"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "blob-storage@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-9"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-implement-member-committee-management-admin-can-add-edit-remove-committee-members-with-fields-name-role-president-secretary-member-mobile-number-public-page-shows-only-name-and-role-admin-view-shows-mobile-numbers",
+      "featureTitle": "Implement Member/Committee management: Admin can add/edit/remove committee members with fields (name, role: President/Secretary/Member, mobile number). Public page shows only name and role; admin view shows mobile numbers.",
+      "files": [
+        "frontend/src/App.tsx",
+        "frontend/src/pages/admin/CommitteeManagementPage.tsx",
+        "frontend/src/pages/public/CommitteePage.tsx"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "blob-storage@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-10"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-implement-jatre-festival-management-admin-can-add-edit-remove-jatre-entries-with-fields-jatre-festival-name-date-description-activities-public-users-can-view-all-jatre-details",
+      "featureTitle": "Implement Jatre/Festival management: Admin can add/edit/remove jatre entries with fields (jatre/festival name, date, description, activities). Public users can view all jatre details.",
+      "files": [
+        "frontend/src/App.tsx",
+        "frontend/src/pages/admin/JatreManagementPage.tsx",
+        "frontend/src/pages/public/JatreFestivalsPage.tsx"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "blob-storage@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-11"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-implement-temple-contact-numbers-section-admin-can-manage-at-least-two-contact-numbers-temple-contact-number-committee-contact-number-public-page-displays-these-numbers-clearly",
+      "featureTitle": "Implement Temple Contact Numbers section: Admin can manage at least two contact numbers (temple contact number, committee contact number). Public page displays these numbers clearly.",
+      "files": [
+        "frontend/src/App.tsx",
+        "frontend/src/pages/admin/ContactsManagementPage.tsx",
+        "frontend/src/pages/public/ContactsPage.tsx"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "blob-storage@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-12"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-implement-a-temple-photos-videos-gallery-admin-can-add-items-via-upload-with-reasonable-size-limits-and-or-by-providing-a-direct-url-public-users-can-browse-the-gallery-ensure-the-solution-works-within-internet-computer-constraints-and-does-not-rely-on-external-databases",
+      "featureTitle": "Implement a Temple Photos & Videos Gallery: Admin can add items via upload (with reasonable size limits) and/or by providing a direct URL; Public users can browse the gallery. Ensure the solution works within Internet Computer constraints and does not rely on external databases.",
+      "files": [
+        "frontend/src/App.tsx",
+        "frontend/src/pages/admin/GalleryManagementPage.tsx",
+        "frontend/src/pages/public/GalleryPage.tsx"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "blob-storage@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-13"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-add-a-temple-location-section-with-an-embedded-google-map-and-a-navigate-button-that-opens-navigation-directions-for-the-temple-location-bommenahalli-vaddarahatti-karnataka-india",
+      "featureTitle": "Add a Temple Location section with an embedded Google Map and a “Navigate” button that opens navigation directions for the temple location (Bommenahalli Vaddarahatti, Karnataka, India).",
+      "files": [
+        "frontend/src/pages/public/LocationPage.tsx"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "blob-storage@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-14"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-enforce-the-required-workflow-and-explicitly-avoid-automatic-payment-gateway-verification-payment-external-via-upi-app-user-submits-confirmation-form-admin-manually-verifies-admin-approves-rejects-receipt-auto-generated-on-approval-balance-auto-updated-on-approval",
+      "featureTitle": "Enforce the required workflow and explicitly avoid automatic payment gateway verification: Payment (external via UPI app) → user submits confirmation form → admin manually verifies → admin approves/rejects → receipt auto generated on approval → balance auto updated on approval.",
+      "files": [
+        "frontend/src/pages/admin/PaymentApprovalsPage.tsx",
+        "frontend/src/pages/public/DonationsPage.tsx",
+        "frontend/src/pages/public/PaymentConfirmationPage.tsx"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "blob-storage@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-15"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-apply-a-consistent-devotional-peaceful-visual-theme-with-a-light-background-simple-layout-traditional-temple-style-iconography-and-mobile-first-spacing-typography-use-english-body-text-and-kannada-english-mixed-headings-across-sections",
+      "featureTitle": "Apply a consistent, devotional, peaceful visual theme with a light background, simple layout, traditional temple-style iconography, and mobile-first spacing/typography. Use English body text and Kannada + English mixed headings across sections.",
+      "files": [
+        "frontend/src/components/layout/PublicLayout.tsx",
+        "frontend/src/index.css",
+        "frontend/tailwind.config.js"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "blob-storage@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-16"
+      ],
+      "confidence": "high"
+    }
+  ]
+}

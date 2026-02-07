@@ -1,0 +1,9 @@
+{
+  "frontend/src/pages/admin/JatreManagementPage.tsx": "Admin page for managing temple festivals (jatres) with CRUD operations including name, date, description, and activities list.",
+  "frontend/src/pages/admin/ContactsManagementPage.tsx": "Admin page for managing temple contact numbers with add, edit, and remove functionality for different contact types.",
+  "frontend/src/pages/admin/GalleryManagementPage.tsx": "Admin page for uploading and managing temple gallery items (photos and videos) using ExternalBlob with upload progress tracking.",
+  "frontend/src/pages/admin/ReceiptViewPage.tsx": "Admin page for viewing individual receipts with download, print, share, regenerate, and cancel functionality, including balance impact warnings; uses correct route path for useParams.",
+  "frontend/src/index.css": "Global styles with OKLCH color system defining temple-specific color tokens and background pattern utilities for devotional theme.",
+  "frontend/tailwind.config.js": "Tailwind configuration extended with temple-specific color tokens (temple-primary, temple-secondary, etc.) for consistent devotional design.",
+  "frontend/src/App.tsx": "Main application router configuration with public and admin routes, using TanStack Router with proper route hierarchy where admin routes are children of /admin path."
+}
